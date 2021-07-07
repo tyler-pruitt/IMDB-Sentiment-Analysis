@@ -48,23 +48,34 @@ tf.loadLayersModel('model/model.json').then(function(model) {
 var predict = function(input) {
   if (window.model) {
     // If the model is loaded, make a prediction with reshaped input
-    window.model.predict([tf.tensor(input).reshape([1, 64, 64])]).array().then(function(scores){
+    window.model.predict([tf.tensor(input).reshape([1, 64, 64])]).array().then(function(output){
       // Process the data
-      scores = scores[0];
+      output = output[0];
 
       // The processed output from the model
       console.log("Model Output:");
-      console.log(scores);
+      console.log(output);
 
       // Determine the highest score's index
-      var predictedIndex = scores.indexOf(Math.max(...scores));
+      var negScore = ( (-1 * ( (output - 0.5) / 0.5) ) + 1) / 2;
+      var posScore = ( ( (output - 0.5) / 0.5) + 1) / 2;
 
-      var characters = ['Positive', 'Negative', 'Neutral'];
+      var scores = [negScore, posScore];
+
+      if (output >= 0.5) {
+        // Prediction is more positive than negative
+        var predictedIndex = 1;
+      } else {
+        // Prediction is more negative than positive
+        var predictedIndex = 0;
+      }
+
+      var labels = ['Negative', 'Positive'];
 
       // Determine the predicted character and output to website and console
-      var predictedCharacter = characters[predictedIndex];
-      $('#sentiment').html(predictedCharacter);
-      console.log("Predicted Sentiment: " + predictedCharacter);
+      var predictedSentiment = labels[predictedIndex];
+      $('#sentiment').html(predictedSentiment);
+      console.log("Predicted Sentiment: " + predictedSentiment);
 
       var probability = scores[predictedIndex] * 100;
 
@@ -78,13 +89,13 @@ var predict = function(input) {
 
       // Update bar plot with data
       // First remove previous data
-      for (var i=0;i<3;i+=1) {
+      for (var i=0;i<2;i+=1) {
         removeData(barchart);
       }
 
       // Add new data
-      for (var i=0;i<3;i+=1) {
-        addData(barchart, characters[i], scores[i]);
+      for (var i=0;i<2;i+=1) {
+        addData(barchart, labels[i], scores[i]);
       }
     });
   } else {
@@ -99,14 +110,14 @@ $('#clearButton').click(function(){
   $('#probability').html('');
 
   // Remove existing data in bar chart
-  for (var i=0;i<3;i+=1) {
+  for (var i=0;i<2;i+=1) {
     removeData(barchart);
   }
   
   // Insert 0's for data in bar chart (i.e. reset the bar chart)
-  var characters = ['Positive', 'Negative', 'Neutral'];
+  var labels = ['Negative', 'Positive'];
 
-  for (var i=0;i<3;i+=1) {
-    addData(barchart, characters[i], 0);
+  for (var i=0;i<2;i+=1) {
+    addData(barchart, labels[i], 0);
   }
 });
