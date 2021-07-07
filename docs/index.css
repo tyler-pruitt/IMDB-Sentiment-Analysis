@@ -12,10 +12,6 @@ text-align: center;
 width: 50%;
 }
 
-#paint {
-margin: auto;
-}
-
 #predictButton {
 margin: auto;
 margin-top: 5px;
@@ -38,7 +34,7 @@ margin-top: 30px;
 text-align: center;
 }
 
-#character {
+#sentiment {
 margin: auto;
 text-align: center;
 vertical-align: middle;
