@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Dec 30 01:07:32 2020
-Last Updated: Tue Jul 6 22:30:25 2021
+Last Updated: Tue Jul 6 23:11:21 2021
 Author: Tyler Pruitt
 """
 
@@ -203,7 +203,6 @@ plt.ylabel('Loss')
 plt.legend()
 
 plt.show()
-plt.savefig('Train_Val_Loss.png')
 
 # Plot accuracy for training and validation
 plt.plot(epochs, binaryAccuracy, 'bo', label='Training accuracy')
@@ -216,7 +215,6 @@ plt.ylabel('Accuracy')
 plt.legend()
 
 plt.show()
-plt.savefig('Train_Val_Acc.png')
 
 # Adapt the model to be able to predict using raw text
 
